@@ -1,20 +1,22 @@
 package com.user108.CitizenInteractionService.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.user108.CitizenInteractionService.dto.ComplaintDto;
 
 @Service
-public class ComplaintProducerService {
+public class ProducerService {
 
 	@Autowired
+	@Qualifier("kafkaProducerTemplate")
 	private KafkaTemplate<String, ComplaintDto> kafkaTemplate;
 	
-	private final String COMPLAINT_TOPIC = "complaintTopic";
+	public static final String COMPLAINT_TOPIC = "complaintTopic";
 
-	public ComplaintProducerService(KafkaTemplate<String, ComplaintDto> kafkaTemplate) {
+	public ProducerService(KafkaTemplate<String, ComplaintDto> kafkaTemplate) {
 		super();
 		this.kafkaTemplate = kafkaTemplate;
 	}
@@ -23,5 +25,5 @@ public class ComplaintProducerService {
 		kafkaTemplate.send(COMPLAINT_TOPIC, complaintDto);
 		return complaintDto.toString()+"Submitted";
 	}
-	
+
 }

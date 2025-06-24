@@ -1,20 +1,20 @@
 #for Google Cloud Service deployment
-runtime: java
+runtime: java21
 env: flex
 runtime_config:
-  jdk: openjdk17
+  jdk: openjdk8
 handlers:
 - url: /.*
   script: auto
-automatic_scaling:
-  target_cpu_utilization: 0.65
-  min_num_instances: 1
-  max_num_instances: 3
+#automatic_scaling:
+#  target_cpu_utilization: 0.65
+#  min_num_instances: 1
+#  max_num_instances: 3
 
-resources:
-  cpu: 1
-  memory_gb: 1
-  disk_size_gb: 10
+#resources:
+#  cpu: 1
+#  memory_gb: 1
+#  disk_size_gb: 10
 
 #env_variables:
 #  SPRING_PROFILES_ACTIVE: "gcp"

@@ -8,7 +8,7 @@ import com.user108.CitizenInteractionService.entity.CitizenComplaint;
 
 public interface CitizenComplaintService {
 
-	List<CitizenComplaint> getComplaints(Integer pageSize, Integer pageNo);
+	List<ComplaintDto> getComplaints(Integer pageSize, Integer pageNo);
 
 	ComplaintDto saveComplaint(ComplaintDto complaintDto);
 	

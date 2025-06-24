@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,11 +22,13 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class CitizenComplaintServiceImpl implements CitizenComplaintService {
 
+	private final static Logger logger = Logger.getLogger("CitizenComplaintServiceImpl");
+	
 	@Autowired
 	private CitizenComplaintRepo complaintRepo;
 	
 	@Autowired
-	private ComplaintProducerService complaintProducerService;
+	private ProducerService complaintProducerService;
 	
 	@PostConstruct
 	private void createComplaints() {
@@ -41,14 +44,18 @@ public class CitizenComplaintServiceImpl implements CitizenComplaintService {
 	}
 	
 	@Override
-	public List<CitizenComplaint> getComplaints(Integer pageSize, Integer pageNo){
+	public List<ComplaintDto> getComplaints(Integer pageSize, Integer pageNo){
 		
 		Pageable paging  = PageRequest.of(pageNo, pageSize);
 		Page<CitizenComplaint> complaintPage = complaintRepo.findAll(paging);
+		
+		
+		List<ComplaintDto> complaintDtos = new ArrayList<ComplaintDto>();
+		
 		if(complaintPage.hasContent())
-			return complaintPage.getContent();
-		else 
-			return null;
+			complaintPage.getContent().parallelStream().forEach(c -> complaintDtos.add(new ComplaintDto(c)));
+		
+		return complaintDtos;
 		
 	}
 
@@ -57,10 +64,10 @@ public class CitizenComplaintServiceImpl implements CitizenComplaintService {
 		
 		CitizenComplaint complaint = new CitizenComplaint(complaintDto);
 		CitizenComplaint newComplaint = complaintRepo.save(complaint);
-		
-		String message = complaintProducerService.sendMessage(complaintDto);
-		
-		return new ComplaintDto(newComplaint);
+		ComplaintDto dto = new ComplaintDto(newComplaint);
+		String message = complaintProducerService.sendMessage(dto);
+		logger.info("Message from Kafka:"+message);
+		return dto;
 	}
 
 	@Override

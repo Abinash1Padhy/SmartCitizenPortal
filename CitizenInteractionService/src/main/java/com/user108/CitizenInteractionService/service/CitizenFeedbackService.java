@@ -16,5 +16,9 @@ public interface CitizenFeedbackService {
 	FeedbackDto findById(String id);
 
 	FeedbackDto deleteById(String string);
+
+	void sendEmailNotification(FeedbackDto feedback);
+
+	void sendSmsNotification(FeedbackDto feedback);
 	
 }

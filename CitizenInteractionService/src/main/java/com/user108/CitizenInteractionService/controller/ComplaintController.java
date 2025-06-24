@@ -27,10 +27,15 @@ public class ComplaintController {
 	@Autowired
 	private CitizenComplaintService complaintService;
 	
+	@GetMapping("/hello")
+	public ResponseEntity<String> getMessage(){
+		return ResponseEntity.ok("Helllo!");
+	}
+	
 	@GetMapping
-	public ResponseEntity<List<CitizenComplaint>> getComplaints(){
+	public ResponseEntity<List<ComplaintDto>> getComplaints(){
 
-		List<CitizenComplaint> complaints = complaintService.getComplaints(100, 1);
+		List<ComplaintDto> complaints = complaintService.getComplaints(100, 1);
 
 		if(complaints!=null)
 			return ResponseEntity.ok(complaints);

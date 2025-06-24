@@ -35,16 +35,14 @@ public class CitizenFeedbackServiceImpl implements CitizenFeedbackService {
 		
 		feedbackRepo.saveAll(feedbacks);
 	}
-	
+
 	@Override
 	public List<CitizenFeedback> getFeedbacks(){
-		
 		return feedbackRepo.findAll();
 	}
 
 	@Override
 	public FeedbackDto saveFeedback(FeedbackDto feedbackDto) {
-		
 		CitizenFeedback feedback = new CitizenFeedback(feedbackDto);
 		feedbackRepo.save(feedback);
 		return new FeedbackDto(feedback);
@@ -61,7 +59,6 @@ public class CitizenFeedbackServiceImpl implements CitizenFeedbackService {
 
 	@Override
 	public FeedbackDto deleteById(String id) {
-		
 		if(id==null)
 			return null;
 		Optional<CitizenFeedback> f = feedbackRepo.findById(id);
@@ -73,5 +70,20 @@ public class CitizenFeedbackServiceImpl implements CitizenFeedbackService {
 		}
 		else 
 			return null;
+
 	}
+	
+	@Override
+	public void sendEmailNotification(FeedbackDto feedback) {
+        // Write to file and send over file and same content over email
+        System.out.println("Sending Email to citizenId: " + feedback.getCitizenId());
+        System.out.println("Feedback submitted: " + feedback.getComments());
+    }
+
+	@Override
+    public void sendSmsNotification(FeedbackDto feedback) {
+        // Simulate SMS send
+        System.out.println("Sending SMS to citizenId: " + feedback.getCitizenId());
+        System.out.println("Your feedback was recorded with rating: " + feedback.getRating());
+    }
 }

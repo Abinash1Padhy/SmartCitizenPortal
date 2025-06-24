@@ -1,0 +1,17 @@
+spring:
+  application:
+    name:
+      APIGateway
+  cloud:
+    gateway:
+      routes:
+        - id: CitizenInteractionService
+          uri: http://localhost:8083/
+          Predicates:
+            - Path=/citizenInteractionService/**
+        - id: UserService
+          uri: http://localhost:8082/
+          Predicates:
+            - Path=/userService/**
+server:
+  port: 8081
