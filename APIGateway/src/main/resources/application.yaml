@@ -13,5 +13,37 @@ spring:
           uri: http://localhost:8082/
           Predicates:
             - Path=/userService/**
+#      globalcors:                              #setting up cors for UI calls
+#        corsConfigurations:
+#          '[/**]':
+#            allowedOrigins: "http://localhost:8080"
+#            allowedMethods:
+#              - GET
+#              - POST
+#              - PUT
+#              - DELETE
+#              - PATCH
+#              - OPTIONS
+#            allowedHeaders: "*"
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/smartCitizenPortal
+          #audiences: apigateway-confidential         #ensures only tokens issued to your client can access the API
+          
+
+
+
 server:
   port: 8081
+  
+keycloak:
+  realm: smartCitizenPortal
+  auth-server-url:
+  resource: apigateway-confidential
+
+logging:
+  level:
+    org.springframework.security.oauth2: DEBUG
